@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
+import JokeAPI from "sv443-joke-api";
 
 const app = express();
 const port = 3000;
@@ -8,6 +9,14 @@ const URL = "https://v2.jokeapi.dev/joke/Any";
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
+
+JokeAPI.getJokes({
+  jokeType: "single",
+})
+  .then((r) => r.json())
+  .then((data) => {
+    updateUI(data);
+  });
 
 app.get("/", async (req, res) => {
   try {
